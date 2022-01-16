@@ -255,7 +255,7 @@ if (true) {
             <p>During the installation, Select:</p>
             <ul>
                <li>SDK platform: Android 12.0 API 32</li>
-               <li>Virtual Device: Pixcel 4 API 32</li>
+               <li>Virtual Device: Pixel 4 API 32</li>
             </ul>
             <p>Test the installation with a <a target="_blank" href="https://codelabs.developers.google.com/codelabs/android-training-hello-world/index.html?index=..%2F..%2Fandroid-training#0">Hello World App and related tasks</a>. For:</p>
             <ul>
@@ -500,14 +500,14 @@ if (true) {
 
 Application Name: <code class="prettyprint">Android_todo_first</code>
 
-Company Domain: <code class="prettyprint">example.com</code>
+Package Name: <code class="prettyprint">example.com</code>
 
 (check the <code class="prettyprint">project name</code> is at the end of the <em>project location</em> pathname.)
 <kbd>Next</kbd>
 
 select the option, <strong>Phone and Tablet</strong>
 For Language select: <strong>Java</strong>
-and for Minimum SDK, select: <strong>API 30: Android 11.0 (R)</strong>
+and for Minimum SDK, select: <strong>API 32: Android 12.0</strong>
 <kbd>Next</kbd>
 
 <strong>Select Empty Activity</strong>
@@ -521,12 +521,13 @@ change the Activity Name to <code class="prettyprint">TodoActivity</code>, keep 
 <kbd>Run &gt; Run App</kbd>
 
 Setup or use an existing virtual device, 
-choose <strong>Pixel XL API 30 targeted for Android 11.0 (Google Play)</strong>
+choose <strong>Pixel 4 API 32 targeted for Android 12.0 (Google Play)</strong>
 
 (installing the virtual device may take some time.)
 Once Android is running, the default 'Hello World!' message is displayed.
 </pre>
-               <details>
+   <!--
+                <details>
                   <summary>Bug Alert! Emulator breaks on rotation</summary>
                   <p>Jan/20 &mdash; Android Studio 4.1.1 has an issue with emulators.  The display is messed up on rotation.  A fix for now:</p>
                   <ol>
@@ -536,6 +537,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
                      <li>Restart the emulator</li>
                   </ol>
                </details>
+    -->
             </details>
 
             <details class="panel">
@@ -601,7 +603,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
                   <details>
                      <summary><code class="prettyprint">Todo</code> view definition</summary>
                      <pre class="slide-small"><code class="prettyprint">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;android.support.constraint.ConstraintLayout
+&lt;androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -611,33 +613,25 @@ Once Android is running, the default 'Hello World!' message is displayed.
 
     &lt;TextView
         android:id="@+id/textViewTodo"
-        android:layout_width="330dp"
-        android:layout_height="336dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/todos"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.502"
-        android:layout_marginBottom="16dp"
-        tools:layout_editor_absoluteY="76dp"/&gt;
+        app:layout_constraintTop_toTopOf="parent" /&gt;
 
     &lt;Button
         android:id="@+id/buttonPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/prev"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/buttonNext"/&gt;
+        app:layout_constraintRight_toLeftOf="@+id/buttonNext" /&gt;
 
     &lt;Button
         android:id="@+id/buttonNext"
@@ -647,9 +641,9 @@ Once Android is running, the default 'Hello World!' message is displayed.
         android:layout_marginEnd="16dp"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/&gt;
+        app:layout_constraintRight_toRightOf="parent" /&gt;
 
-&lt;/android.support.constraint.ConstraintLayout&gt;</code></pre>
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</code></pre>
                   </details>
 
                   <p>
@@ -711,7 +705,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
                      initialise <code class="prettyprint">buttonNext</code> to override its <code class="prettyprint">setOnClickListener</code>
                   </li>
                   <li>
-                     instantiate a new anonymous <code class="prettyprint">View.OnClicklistener</code> function as a handler for the <code class="prettyprint">buttonNext.onClickListener</code>.
+                     instantiate a new anonymous <code class="prettyprint">View.OnClickListener</code> function as a handler for the <code class="prettyprint">buttonNext.onClickListener</code>.
                   </li>
                   <li>
                      override the <code class="prettyprint">onClick</code> method in the anonymous function to cycle the <code class="prettyprint">mTodo</code> array (checking for the end of array) and update the <code class="prettyprint">TodoTextView</code> with the current todo.
@@ -753,7 +747,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
       buttonNext.setOnClickListener(new View.OnClickListener(){
          @Override
          public void onClick(View v) {
-             mTodoIndexx += 1;
+             mTodoIndex += 1;
              TodoTextView.setText(mTodos[mTodoIndex]);
          }
       });
@@ -829,7 +823,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
                   </p>
                   <p>
                      Correct code that does check for the size of the array:<br />
-                     <code class="prettyprint>">mTodoIndex = (mTodoIndex + 1) % todos.length;</code><br /> (Note, % in Java returns the remainder, hence the index will never exceed the array size an alternative less efficient solution would be to test for the size of the array).
+                     <code class="prettyprint>">mTodoIndex = (mTodoIndex + 1) % mTodos.length;</code><br /> (Note, % in Java returns the remainder, hence the index will never exceed the array size an alternative less efficient solution would be to test for the size of the array).
                   </p>
                </details>
 
@@ -892,7 +886,7 @@ if (savedInstanceState != null){
                </p>
                <ol>
                   <li>
-                     At the project tab (top right), switch from <kbd>Android</kbd> to <kbd>Project</kbd> view
+                      At the project tab (top right), switch from <kbd><u>Android</u></kbd> to <kbd><u>Project</u></kbd> view
                   </li>
                   <li>
                      Open <code class="prettyprint">app/src/main/res</code>
@@ -907,8 +901,7 @@ if (savedInstanceState != null){
                      <details>
                         <summary>Landscape view definition <code class="prettyprint">activity_todo.xml</code></summary>
                         <pre class="slide-small"><code class="prettyprint">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+&lt;androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -917,47 +910,39 @@ if (savedInstanceState != null){
 
     &lt;TextView
         android:id="@+id/textViewTodo"
-        android:layout_width="330dp"
-        android:layout_height="336dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/todos"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.502"
-        tools:layout_editor_absoluteY="76dp"/&gt;
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="36sp" /&gt;
 
     &lt;Button
         android:id="@+id/buttonPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="176dp"
         android:text="@string/prev"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/buttonNext"/&gt;
+        app:layout_constraintRight_toLeftOf="@+id/buttonNext" /&gt;
 
     &lt;Button
         android:id="@+id/buttonNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/&gt;
 
-&lt;/android.support.constraint.ConstraintLayout&gt;</code></pre>
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</code></pre>
                      </details>
 
                   </li>

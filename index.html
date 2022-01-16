@@ -1032,6 +1032,7 @@ setContentView(R.layout.activity_todo);</code></pre>
 
                <details class="panel">
                   <summary>Sequence diagram &mdash; todoDetail app</summary>
+                   <p>Please note that the following image shows <u>startActivityForResult</u> and  <u>onActivityResult()</u>. These are deprecated and replaced with the <u>ActivityResultContracts</u> </p>
                   <img class="full-width" src="assets/todo_uml_sequence.png" alt="todoApp sequence diagram">
                </details>
 
@@ -1048,13 +1049,13 @@ setContentView(R.layout.activity_todo);</code></pre>
 
 Application Name: <code class="prettyprint">todo-detail-app</code>
 
-Company Domain: <code class="prettyprint">example.com</code>
+Package Name: <code class="prettyprint">example.com</code>
 
 (check the <code class="prettyprint">project name</code> is at the end of the <em>project location</em> pathname.)
 <kbd>Next</kbd>
 
 select the option, <strong>Phone and Tablet</strong>
-and from the drop-down list, select: <strong>API 27: Android 8.1 (Oreo)</strong>
+and from the drop-down list, select: <strong>API 32: Android 12</strong>
 <kbd>Next</kbd>
 
 <strong>Select Empty Activity</strong>
@@ -1068,7 +1069,7 @@ change the Activity Name to <code class="prettyprint">TodoActivity</code>, keep 
 <kbd>Run &gt; Run App</kbd>
 
 Setup or use an existing virtual device, 
-choose <strong>Nexus 5X API 27 targeted for Android 8.1 (Google Play)</strong>
+choose <strong>API 32 targeted for Android 12 (Google Play)</strong>
 
 (installing the virtual device may take some time.)  
 Once Android is running, the default 'Hello World!' message is displayed.
@@ -1127,7 +1128,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
                      Note, the <span class="error">errors</span>, <code class="prettyprint">Cannot resolve symbol</code> for resource names.
                   </p>
                   <p>
-                     To define these resources, replace the <code class="prettyprint">res/values/string.xml</code> file with the corresponding content from the <a target="_blank" href="https://github.com/comp-bkt/todo-detail-app">git repository</a>
+                      To define these resources, view the corresponding content from the <a target="_blank" href="https://github.com/comp-bkt/todo-detail-app">git repository</a> - <code class="prettyprint">colors.xml, strings.xml and styles.xml</code>
                   </p>
 
                   <p>
@@ -1146,13 +1147,24 @@ Once Android is running, the default 'Hello World!' message is displayed.
                      Refere to the sequence diagram. The <code class="prettyprint">TodoActivity</code> controller has a Todo details button click event and associated onClick handler.
                   </li>
                   <li>
-                     The <code class="prettyprint">onclick</code> handler calls a <code class="prettyprint">static</code> method in the <code class="prettyprint">TodoDetail</code> controller, passing it the id of the todo and receiving the intent object.
+                      The button has a <code class="prettyprint">onClickListener</code> handler which calls  the <code class="prettyprint">onClick()</code> method. This will call a <code class="prettyprint">static method in the TodoDetailActivity</code> controller, passing it the id of the todo and receiving the intent object. It also launches the activity through an <code class="prettyprint">ActivityResultLauncher</code> object that will have an <code class="prettyprint">ActivityResultContract</code> registered to handle the return event of coming back to the Todo Activity.
                      <pre class="slide-small"><code class = "prettyprint">Intent intent = TodoDetailActivity.newIntent(
                      TodoActivity.this, mTodoIndex);</code></pre>
                   </li>
-                  <li>
-                     <pre class="slide-small"><code class = "prettyprint">startActivityForResult(intent, IS_SUCCESS);</code></pre> starts the <code class="prettyprint">TodoDetailActivity</code> and any result can be accessed in the <code class="prettyprint">TodoActivity</code> by overriding the <code class="prettyprint">onActivityResult</code> method
-                  </li>
+                  
+                     <pre class="slide-small"><code class = "prettyprint">todoDetailActivityResultLauncher.launch(intent);</code>
+                     </pre> 
+                   
+                   <pre class="slide-small"><code class = "prettyprint">ActivityResultLauncher&lt;Intent&gt; todoDetailActivityResultLauncher = <br />
+    registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),<br />
+        /* written as a Lamda expression*/
+        result -&gt; {
+        /*our code called on returning back to Activity*/<br />       
+        }
+    );
+        </code>
+        </pre>
+                  
                   <li>
                      Refer to the <a target="_blank" href="https://github.com/comp-bkt/todo-detail-app">git repository</a> code and create the <code class="prettyprint">TodoActivity</code> and <code class="prettyprint">TodoDetailActivity</code> classes.
                   </li>
@@ -1191,30 +1203,19 @@ Once Android is running, the default 'Hello World!' message is displayed.
                            Manifest defines the main activity which has an <code class="prettyprint">onCreate</code> callback method
                         </li>
                         <li>
-                           etc. until <code class="prettyprint">detail</code> click event.
-                        </li>
+                           Register an ActivityResultLauncher - see code in Controller section above and refer to github source code.</li>
                         <li>
-                           Anonymous detail <code class="prettyprint">onCick</code> event handler
+                           Anonymous detail <code class="prettyprint">onClick</code> event handler
                         </li>
                         <li>
                            <pre class="slide-small"><code class="prettyprint">buttonTodoDetail.setOnClickListener(new View.OnClickListener(){
    @Override
    public void onClick(View v) {
-      /* Note, the child class being called has a static method 
-         determining the parameter to be passed to it in the intent 
-         object */
-      Intent intent = TodoDetailActivity.newIntent(
-         TodoActivity.this, mTodoIndex);
-
-      /* second param requestCode identifies the call as there 
-         could be many "intents" */
-      startActivityForResult(intent, IS_SUCCESS);
-      /* The result will come back through */
-      onActivityResult(requestCode, resultCode, Intent) method */
-
-   }
+      /* code to create intent and call ActivityResultLauncher */
+      }
 });</code></pre>
                         </li>
+                         
                         <li>Questions at this point in the walk-through the code:
                            <ul>
                               <li>What is a static method? and why use it here?</li>
@@ -1233,7 +1234,7 @@ Once Android is running, the default 'Hello World!' message is displayed.
                            Add a new use case to indicate a pending incomplete <code class="prettyprint">todo</code> (similar to checkbox for completed todo)
                         </li>
                         <li>
-                           Explain <code class="prettyprint">onActivityResult</code>
+                           Explain <code class="prettyprint">ActivityResultContracts</code>
                         </li>
                      </ul>
 

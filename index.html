@@ -255,7 +255,7 @@ if (true) {
             <p>During the installation, Select:</p>
             <ul>
                <li>SDK platform: Android 12.0 API 32</li>
-               <li>Virtual Device: Pixel 4 API 32</li>
+               <li>Virtual Device: Pixel 5 API 32</li>
             </ul>
             <p>Test the installation with a <a target="_blank" href="https://codelabs.developers.google.com/codelabs/android-training-hello-world/index.html?index=..%2F..%2Fandroid-training#0">Hello World App and related tasks</a>. For:</p>
             <ul>
@@ -2513,7 +2513,10 @@ git log </code></pre>
                      <li>
                         <details>
                            <summary><code class="prettyprint">manifest</code> file</summary>
-                           <pre class="slide-small"><code class="prettyprint">&lt;activity android:name=".HelloWorld"&gt;
+                           <pre class="slide-small"><code class="prettyprint">
+&lt;activity 
+    android:name=".HelloWorld" 
+    android:exported="true" &gt;
    &lt;intent-filter&gt;
       &lt;action android:name="android.intent.action.MAIN"/&gt;
       &lt;category android:name="android.intent.category.LAUNCHER"/&gt;
@@ -2548,7 +2551,7 @@ git log </code></pre>
                            <summary>Resources &amp; <code class="prettyprint">view</code> definition</summary>
 
                            <pre class="slide-small"><code class="prettyprint">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;android.support.constraint.ConstraintLayout 
+&lt;androidx.constraintlayout.widget.ConstraintLayout 
    &hellip;
    android:layout_width="match_parent"
    android:layout_height="match_parent"
@@ -2562,7 +2565,7 @@ git log </code></pre>
       app:layout_constraintBottom_toBottomOf="parent"
       &hellip; /&gt;
 
-&lt;/android.support.constraint.ConstraintLayout&gt;
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
 
 and a file strings.xml in the res folder defines:
 &lt;resources&gt;
@@ -2909,7 +2912,7 @@ intent.putExtra( "EX2","example value" );</code></pre>
          <details class="panel">
             <summary>Sequence Diagram &mdash; <em>Todo App</em></summary>
             <div class="slide-article panel">
-
+                <p>Please note that SDK32 has depreacted startActivityForResult and onActivityResult and replaced it with <a href="https://developer.android.com/training/basics/intents/result#java">ActivityContracts</a>.</p>
                <div class="width-full">
                   <span data-class="image width-full" data-image="Android todo detail app uml sequence diagram" data-local-src="assets/todo_uml_sequence.png" data-cdn-src="https://cdn.glitch.com/3943c32b-ac0d-4285-afbf-c67ee5a851ca%2Ftodo_uml_sequence.png?1549406509581"></span>
                </div>
